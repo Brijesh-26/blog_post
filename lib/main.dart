@@ -1,0 +1,41 @@
+import 'package:blog_post/blogs_model.dart';
+import 'package:blog_post/desc.dart';
+import 'package:blog_post/new_post.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'home.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+
+
+class _MyAppState extends State<MyApp> {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return NeumorphicApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      themeMode: ThemeMode.light,
+      theme: NeumorphicThemeData(
+        baseColor: Color(0xFFFFFFFF),
+        lightSource: LightSource.topLeft,
+        depth: 10,
+      ),
+      darkTheme: NeumorphicThemeData(
+        baseColor: Color(0xFF3E3E3E),
+        lightSource: LightSource.topLeft,
+        depth: 6,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
