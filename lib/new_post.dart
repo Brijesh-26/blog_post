@@ -32,6 +32,7 @@ class _PostState extends State<Post> {
     setState(() {
       if (pickedImage != null) {
         _image = File(pickedImage.path);
+        print('working properly');
       } else {
         print('no image selected');
       }
@@ -75,28 +76,28 @@ class _PostState extends State<Post> {
                 padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 20.0),
                 child: _image == null
                     ? NeumorphicButton(
-                      onPressed: getImage,
-                      style: NeumorphicStyle(
-                          shape: NeumorphicShape.convex,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.circular(10)),
-                          depth: 10,
-                          intensity: .85,
-                          surfaceIntensity: .8,
-                          lightSource: LightSource.topLeft,
-                          color: Color.fromARGB(255, 247, 198, 198)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add_photo_alternate, size: 20),
-                          Text('Add Image',
-                              style: GoogleFonts.dancingScript(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0))
-                        ],
-                      ),
-                    )
+                        onPressed: getImage,
+                        style: NeumorphicStyle(
+                            shape: NeumorphicShape.convex,
+                            boxShape: NeumorphicBoxShape.roundRect(
+                                BorderRadius.circular(10)),
+                            depth: 10,
+                            intensity: .85,
+                            surfaceIntensity: .8,
+                            lightSource: LightSource.topLeft,
+                            color: Color.fromARGB(255, 247, 198, 198)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add_photo_alternate, size: 20),
+                            Text('Add Image',
+                                style: GoogleFonts.dancingScript(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.0))
+                          ],
+                        ),
+                      )
                     : Container(
                         height: MediaQuery.of(context).size.height * .30,
                         width: MediaQuery.of(context).size.width * .50,
