@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:blog_post/blogs_model.dart';
 import 'package:blog_post/desc.dart';
 import 'package:blog_post/new_post.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -15,11 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isOn = false;
   bool like = false;
 
-  // Future<List<Blogs>> _getData() async {
-  //   List<Blogs> blogData = [];
-
-    
-  // }
+  final ref = FirebaseDatabase.instance.ref('Post');
 
   @override
   void initState() {
@@ -72,14 +71,17 @@ class _MyHomePageState extends State<MyHomePage> {
               // this is a model item
 
               Expanded(
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: 10,
-                  itemBuilder: ((context, index) {
-                    return CustomCard(context);
-                  }),
-                ),
-              ),
+                child: FirebaseAnimatedList(
+                      query: ref,
+                      itemBuilder: ((context, snapshot, animation, index) {
+                        return CustomCard(context, 
+                        snapshot.child('title').value.toString(), 
+                        snapshot.child('description').value.toString(),
+                        snapshot.child('image').value.toString()
+                        
+                        );
+                      }))),
+              
             ],
           ),
         ),
@@ -100,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget CustomCard(BuildContext context) {
+  Widget CustomCard(BuildContext context, String titlecard, String descCard, String path) {
     return Card(
       elevation: 10.0,
       shape: RoundedRectangleBorder(
@@ -110,22 +112,25 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Column(
         children: [
           GestureDetector(
-            onDoubleTap: () {
-              // apply instagram like animation
-              // search this on instagram
-              setState(() {
-                like = true;
-              });
-              print('double tap');
-            },
+           
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Desc()),
+                MaterialPageRoute(builder: (context) => Desc(desc: descCard,)),
               );
             },
             child: Container(
               child: Column(children: [
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    titlecard,
+                    style: GoogleFonts.dancingScript(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.0),
+                  ),
+                ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: Image.network(
@@ -134,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Ananya is my ankit\'s love  but disha will give their ass to brijesh................',
+                    descCard,
                     style: GoogleFonts.dancingScript(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,

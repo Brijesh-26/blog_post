@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,10 +16,11 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   TextEditingController title = TextEditingController();
-
   TextEditingController desc = TextEditingController();
 
   bool _isLoading = false;
+
+  final databaseRef = FirebaseDatabase.instance.ref('Post');
 
   final ImagePicker _picker = ImagePicker();
   // Pick an image.
@@ -148,9 +151,40 @@ class _PostState extends State<Post> {
                 ),
               ),
 
+              // button to post in database
               Padding(
                 padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 20.0),
                 child: NeumorphicButton(
+                    onPressed: () {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      databaseRef
+                          .child(
+                              DateTime.now().millisecondsSinceEpoch.toString())
+                          .set({
+                        'title': title.text.toString(),
+                        'description': desc.text.toString(),
+                        'image': _image.toString()
+
+                        // image to be save pls check once
+                      }).then((value) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        Fluttertoast.showToast(
+                            msg: 'blog added to database successfully');
+
+                        Navigator.pop(context);
+                      }).onError((error, stackTrace) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        Fluttertoast.showToast(
+                            msg:
+                                'issues regarding posting blog!!! Please check internet connection');
+                      });
+                    },
                     style: NeumorphicStyle(
                         shape: NeumorphicShape.convex,
                         boxShape: NeumorphicBoxShape.roundRect(

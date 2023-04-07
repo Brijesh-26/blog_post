@@ -4,17 +4,20 @@ import 'package:blog_post/new_post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'home.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
-
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
@@ -38,4 +41,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
