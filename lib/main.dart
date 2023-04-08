@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+  
+
+  
   @override
   Widget build(BuildContext context) {
     return NeumorphicApp(
@@ -41,3 +44,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
+//  home: MyAppClient().getCurrentUser() != null
+//       ? HomeViewController()
+//       : LoginViewController(),

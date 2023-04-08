@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -26,6 +27,55 @@ class _PostState extends State<Post> {
   // Pick an image.
 
   File? _image;
+
+  // final FirebaseAuth _auth = FirebaseAuth.ince;
+
+  submitToDB() {
+    // User? _user = _auth.currentUser;
+
+    // dynamic uid = _user?.uid;
+    // dynamic author = _user?.displayName;
+    // dynamic photoURL = _user?.photoURL;
+
+    // print(uid);
+    // print(author);
+    // print(photoURL);
+
+    // print(_user!.uid);
+
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        print(user.uid);
+      } else {
+        print('------------tu chutia h----------------');
+      }
+    });
+
+    databaseRef.child(DateTime.now().millisecondsSinceEpoch.toString()).set({
+      'title': title.text.toString(),
+      'description': desc.text.toString(),
+      'image': _image.toString(),
+      // 'uid': uid,
+      // 'author': author,
+      // 'photoUrl': photoURL
+
+      // image to be save pls check once
+    }).then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: 'blog added to database successfully');
+
+      Navigator.pop(context);
+    }).onError((error, stackTrace) {
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(
+          msg:
+              'issues regarding posting blog!!! Please check internet connection');
+    });
+  }
 
   Future getImage() async {
     print('clicked for picking image');
@@ -159,31 +209,8 @@ class _PostState extends State<Post> {
                       setState(() {
                         _isLoading = true;
                       });
-                      databaseRef
-                          .child(
-                              DateTime.now().millisecondsSinceEpoch.toString())
-                          .set({
-                        'title': title.text.toString(),
-                        'description': desc.text.toString(),
-                        'image': _image.toString()
 
-                        // image to be save pls check once
-                      }).then((value) {
-                        setState(() {
-                          _isLoading = false;
-                        });
-                        Fluttertoast.showToast(
-                            msg: 'blog added to database successfully');
-
-                        Navigator.pop(context);
-                      }).onError((error, stackTrace) {
-                        setState(() {
-                          _isLoading = false;
-                        });
-                        Fluttertoast.showToast(
-                            msg:
-                                'issues regarding posting blog!!! Please check internet connection');
-                      });
+                      submitToDB();
                     },
                     style: NeumorphicStyle(
                         shape: NeumorphicShape.convex,
