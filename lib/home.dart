@@ -19,10 +19,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final user = FirebaseAuth.instance.currentUser!;
+
   bool isOn = false;
   bool like = false;
 
   final ref = FirebaseDatabase.instance.ref('Post');
+
+  List<String> months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "July",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +92,13 @@ class _MyHomePageState extends State<MyHomePage> {
                             context,
                             snapshot.child('title').value.toString(),
                             snapshot.child('description').value.toString(),
-                            snapshot.child('image').value.toString());
+                            snapshot.child('image').value.toString(),
+                            snapshot.child('author').value.toString(),
+                            snapshot.child('photoUrl').value.toString(),
+                            snapshot.child('day').value.toString(),
+                            snapshot.child('month').value.toString()
+                            
+                            );
                       }))),
             ],
           ),
@@ -97,8 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget CustomCard(
-      BuildContext context, String titlecard, String descCard, String path) {
+  Widget CustomCard(BuildContext context, String titlecard, String descCard,
+      String path, String author, String photoUrl, String day, String month) {
     return Card(
       elevation: 10.0,
       shape: RoundedRectangleBorder(
@@ -126,12 +149,32 @@ class _MyHomePageState extends State<MyHomePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CircleAvatar(
-                              radius: 15,
-                              backgroundColor: Colors.black,
-                              child: Icon(Icons.person_2_outlined)),
+                              backgroundColor: Colors.green,
+                              radius: 22,
+                              child: CircleAvatar(
+                                  radius: 20,
+                                  foregroundColor: Colors.black,
+                                  backgroundImage: NetworkImage(photoUrl)),
+                            ),
                             // in googlecircularavatar
-                            SizedBox(width: 8.0,),
-                            Text('Brijesh', style: TextStyle(fontSize: 18.0),) // it will be from firebase
+                            SizedBox(
+                              width: 8.0,
+                            ),
+                            Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                Text(
+                                  author,
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                                Text(
+                                  "posted on   "+day,
+                                  style: TextStyle(fontSize: 9.0),
+
+                                ),
+                              ]),
+                            )
                           ]),
                     )),
                 Divider(
@@ -150,7 +193,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
-                  // child: Image.file(),
+                  child: Image.network(
+                      'https://tse4.mm.bing.net/th?id=OIP.rvSWtRd_oPRTwDoTCmkP5gHaE8&pid=Api&P=0'),
                 ),
                 Padding(
                   padding: EdgeInsets.all(5.0),

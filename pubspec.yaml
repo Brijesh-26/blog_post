@@ -46,6 +46,9 @@ dependencies:
   firestore_ui: ^1.25.1
   google_sign_in: ^6.1.0 
 
+  provider: ^6.0.5
+  font_awesome_flutter: ^10.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

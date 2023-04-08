@@ -16,6 +16,8 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
+  final user = FirebaseAuth.instance.currentUser!;
+
   TextEditingController title = TextEditingController();
   TextEditingController desc = TextEditingController();
 
@@ -28,36 +30,21 @@ class _PostState extends State<Post> {
 
   File? _image;
 
-  // final FirebaseAuth _auth = FirebaseAuth.ince;
-
   submitToDB() {
-    // User? _user = _auth.currentUser;
+    DateTime nowDate = DateTime.now();
+    int currMonth = nowDate.month;
+    int currDay = nowDate.day;
 
-    // dynamic uid = _user?.uid;
-    // dynamic author = _user?.displayName;
-    // dynamic photoURL = _user?.photoURL;
-
-    // print(uid);
-    // print(author);
-    // print(photoURL);
-
-    // print(_user!.uid);
-
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user != null) {
-        print(user.uid);
-      } else {
-        print('------------tu chutia h----------------');
-      }
-    });
+    // print(currYear.toString());
 
     databaseRef.child(DateTime.now().millisecondsSinceEpoch.toString()).set({
       'title': title.text.toString(),
       'description': desc.text.toString(),
       'image': _image.toString(),
-      // 'uid': uid,
-      // 'author': author,
-      // 'photoUrl': photoURL
+      'author': user.displayName,
+      'photoUrl': user.photoURL,
+      'month': currMonth,
+      'day': currDay
 
       // image to be save pls check once
     }).then((value) {

@@ -1,11 +1,14 @@
 import 'package:blog_post/blogs_model.dart';
 import 'package:blog_post/desc.dart';
+import 'package:blog_post/google_sign_in.dart';
 import 'package:blog_post/new_post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
+import 'dummypage.dart';
 import 'home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,18 +18,13 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  State<MyApp> createState() => _MyAppState();
-}
+  Widget build(BuildContext context) => ChangeNotifierProvider(
 
-class _MyAppState extends State<MyApp> {
-  
 
-  
-  @override
-  Widget build(BuildContext context) {
-    return NeumorphicApp(
+    create: ((context) => GoogleSignInProvider()),
+    child: NeumorphicApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       themeMode: ThemeMode.light,
@@ -40,11 +38,10 @@ class _MyAppState extends State<MyApp> {
         lightSource: LightSource.topLeft,
         depth: 6,
       ),
-      home: MyHomePage(),
-    );
-  }
+      home: DummyPage(),
+    ),
+  );
 }
-
 
 //  home: MyAppClient().getCurrentUser() != null
 //       ? HomeViewController()
