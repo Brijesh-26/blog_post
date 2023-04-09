@@ -8,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'notification_api.dart';
+
 class Post extends StatefulWidget {
   const Post({super.key});
 
@@ -36,7 +38,7 @@ class _PostState extends State<Post> {
     int currDay = nowDate.day;
 
     // print(currYear.toString());
-
+// DateTime.now().millisecondsSinceEpoch.toString()
     databaseRef.child(DateTime.now().millisecondsSinceEpoch.toString()).set({
       'title': title.text.toString(),
       'description': desc.text.toString(),
@@ -44,7 +46,8 @@ class _PostState extends State<Post> {
       'author': user.displayName,
       'photoUrl': user.photoURL,
       'month': currMonth,
-      'day': currDay
+      'day': currDay,
+      'postId': DateTime.now().minute.toString()
 
       // image to be save pls check once
     }).then((value) {
@@ -62,6 +65,13 @@ class _PostState extends State<Post> {
           msg:
               'issues regarding posting blog!!! Please check internet connection');
     });
+
+    NotificationApi.showNotification(
+
+      title: 'Blogger',
+      body: 'new thought posted, wanna check???',
+      payload: 'Blogger',
+    );
   }
 
   Future getImage() async {

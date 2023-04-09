@@ -96,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             snapshot.child('author').value.toString(),
                             snapshot.child('photoUrl').value.toString(),
                             snapshot.child('day').value.toString(),
-                            snapshot.child('month').value.toString()
+                            snapshot.child('month').value.toString(),
+                            snapshot.child('postId').toString()
                             
                             );
                       }))),
@@ -121,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget CustomCard(BuildContext context, String titlecard, String descCard,
-      String path, String author, String photoUrl, String day, String month) {
+      String path, String author, String photoUrl, String day, String month, String postId) {
     return Card(
       elevation: 10.0,
       shape: RoundedRectangleBorder(
@@ -137,6 +138,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 CupertinoPageRoute(
                     builder: (context) => Desc(
                           desc: descCard,
+
+                          photourl: photoUrl,
+                          displayname: author,
+
+                          postId: postId,
                         )),
               );
             },
