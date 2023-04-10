@@ -26,20 +26,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final ref = FirebaseDatabase.instance.ref('Post');
 
-  List<String> months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "July",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
+  var map = {
+
+    '1': 'Jan', 
+    '2': 'Feb', 
+    '3': 'Mar', 
+    '4': 'Apr', 
+    '5': 'May', 
+    '6': 'Jun', 
+    '7': 'July',
+    '8': 'Aug', 
+    '9': 'Sep', 
+    '10': 'Oct', 
+    '11': 'Nov', 
+    '12': 'Dec'
+  };
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,9 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             snapshot.child('photoUrl').value.toString(),
                             snapshot.child('day').value.toString(),
                             snapshot.child('month').value.toString(),
-                            snapshot.child('postId').toString()
-                            
-                            );
+                            snapshot.child('postId').toString());
                       }))),
             ],
           ),
@@ -121,8 +120,16 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget CustomCard(BuildContext context, String titlecard, String descCard,
-      String path, String author, String photoUrl, String day, String month, String postId) {
+  Widget CustomCard(
+      BuildContext context,
+      String titlecard,
+      String descCard,
+      String path,
+      String author,
+      String photoUrl,
+      String day,
+      String month,
+      String postId) {
     return Card(
       elevation: 10.0,
       shape: RoundedRectangleBorder(
@@ -138,10 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 CupertinoPageRoute(
                     builder: (context) => Desc(
                           desc: descCard,
-
                           photourl: photoUrl,
                           displayname: author,
-
                           postId: postId,
                         )),
               );
@@ -168,18 +173,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Container(
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                Text(
-                                  author,
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                Text(
-                                  "posted on   "+day,
-                                  style: TextStyle(fontSize: 9.0),
-
-                                ),
-                              ]),
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      author,
+                                      style: TextStyle(fontSize: 12.0),
+                                    ),
+                                    Text(
+                                      "posted on   $day${map[month]}",
+                                      style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w600),
+                                    ),
+                                  ]),
                             )
                           ]),
                     )),
@@ -205,9 +210,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    descCard,
+                    descCard.substring(0, 100) + '.................',
                     style: GoogleFonts.dancingScript(
-                        fontSize: 15.0,
+                        fontSize: 17.0,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.0),
                   ),
@@ -219,20 +224,22 @@ class _MyHomePageState extends State<MyHomePage> {
             thickness: 2.0,
             height: 15.0,
           ),
-          Container(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Icon(
-                    like ? Icons.favorite : Icons.favorite_border_outlined,
-                    color: Colors.red,
-                  ),
-                  Icon(
-                    Icons.comment_outlined,
-                  ),
-                  Icon(Icons.send)
-                ]),
-          ),
+          // GestureDetector(
+          //   onTap: (){
+
+          //   },
+          //   child: Container(
+          //     child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //         children: [
+          //           Text(
+          //             'Share',
+          //             style: GoogleFonts.dancingScript(
+          //                 fontSize: 18.0, letterSpacing: 1.0),
+          //           ),
+          //         ]),
+          //   ),
+          // ),
           SizedBox(
             height: 10.0,
           )
