@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'notification_api.dart';
+import '../settings/notification_api.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -19,6 +20,8 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   final user = FirebaseAuth.instance.currentUser!;
+
+  final storage = FirebaseStorage.instance;
 
   TextEditingController title = TextEditingController();
   TextEditingController desc = TextEditingController();
@@ -32,7 +35,7 @@ class _PostState extends State<Post> {
 
   File? _image;
 
-  submitToDB() {
+  submitToDB() async {
     DateTime nowDate = DateTime.now();
     int currMonth = nowDate.month;
     int currDay = nowDate.day;
@@ -66,8 +69,14 @@ class _PostState extends State<Post> {
               'issues regarding posting blog!!! Please check internet connection');
     });
 
-    NotificationApi.showNotification(
+    // CODE FOR STORING IMAGE IN FIREBASE STORAGE
+    // await storage.ref('test/$_image').putFile(_image!).then((value) {
+    //   Fluttertoast.showToast(msg: 'image uploaded successfully');
+    // }).onError((error, stackTrace) {
+    //   Fluttertoast.showToast(msg: 'there is some error in uploading image');
+    // });
 
+    NotificationApi.showNotification(
       title: 'Blogger',
       body: 'new thought posted, wanna check???',
       payload: 'Blogger',
@@ -77,12 +86,14 @@ class _PostState extends State<Post> {
   Future getImage() async {
     print('clicked for picking image');
     final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+
     print('image picked');
 
     setState(() {
       if (pickedImage != null) {
         _image = File(pickedImage.path);
         print('working properly');
+        print(_image);
       } else {
         print('no image selected');
       }

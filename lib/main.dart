@@ -1,15 +1,15 @@
-import 'package:blog_post/blogs_model.dart';
-import 'package:blog_post/desc.dart';
-import 'package:blog_post/google_sign_in.dart';
-import 'package:blog_post/new_post.dart';
+import 'package:blog_post/blog_app/screens/blogs_model.dart';
+import 'package:blog_post/blog_app/screens/desc.dart';
+import 'package:blog_post/blog_app/auth/google_sign_in.dart';
+import 'package:blog_post/blog_app/screens/new_post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
-import 'dummypage.dart';
-import 'home.dart';
+import 'blog_app/auth/dummypage.dart';
+import 'blog_app/screens/blog_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
